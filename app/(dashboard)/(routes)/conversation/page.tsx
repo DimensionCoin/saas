@@ -8,7 +8,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ChatCompletionRequestMessage } from "openai";
-
+import { Switch } from "@/components/ui/switch";
 import { BotAvatar } from "@/components/bot-avatar";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,13 @@ import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 
 import { formSchema } from "./constants";
+import { Label } from "@/components/ui/label";
 
 const ConversationPage = () => {
   const router = useRouter();
   const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,20 +39,26 @@ const ConversationPage = () => {
 
   const isLoading = form.formState.isSubmitting;
 
- function speakText(text: string | undefined) {
-   const synth = window.speechSynthesis;
-   const voices = synth.getVoices();
-   const selectedVoiceIndex = 10;
+  function toggleVoice() {
+    setVoiceEnabled(!voiceEnabled);
+  }
 
-   const utterance = new SpeechSynthesisUtterance(text);
+async function speakText(text: string | undefined) {
+  if (!voiceEnabled || !text) return;
 
-   // Ensure the selected voice index exists.
-   if (voices[selectedVoiceIndex]) {
-     utterance.voice = voices[selectedVoiceIndex];
-   }
+  try {
+    const response = await axios.post("/api/text-to-speech", { text: text });
+    const audioData = `data:audio/mp3;base64,${Buffer.from(
+      response.data
+    ).toString("base64")}`;
 
-   synth.speak(utterance);
- }
+    const audio = new Audio(audioData);
+    audio.play();
+  } catch (error) {
+    console.error("Error fetching audio:", error);
+  }
+}
+
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -122,7 +130,7 @@ const ConversationPage = () => {
                 name="prompt"
                 render={({ field }) => (
                   <FormItem className="col-span-12 lg:col-span-10">
-                    <FormControl className="m-0 p-0">
+                    <FormControl className="m-0 p-1 bg-black/5">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
@@ -144,6 +152,15 @@ const ConversationPage = () => {
             </form>
           </Form>
         </div>
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="Voice"
+            checked={voiceEnabled}
+            onCheckedChange={() => toggleVoice()}
+          />
+          <Label className="text-sm">Voice</Label>
+        </div>
+
         <div className="space-y-4 mt-4">
           {isLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">

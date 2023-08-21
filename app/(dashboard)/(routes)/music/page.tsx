@@ -92,7 +92,7 @@ const MusicPage = () => {
               name="prompt"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-10">
-                  <FormControl className="m-0 p-0">
+                  <FormControl className="m-0 p-1 bg-black/5">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}

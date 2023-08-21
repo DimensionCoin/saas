@@ -103,7 +103,7 @@ const PhotoPage = () => {
               name="prompt"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-6">
-                  <FormControl className="m-0 p-0">
+                  <FormControl className="m-0 p-1 bg-black/5">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}
@@ -118,19 +118,19 @@ const PhotoPage = () => {
               control={form.control}
               name="amount"
               render={({ field }) => (
-                <FormItem className="col-span-12 lg:col-span-2">
+                <FormItem className="col-span-12 lg:col-span-2 ">
                   <Select
                     disabled={isLoading}
                     onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-black/5 p-1 ">
                       <SelectTrigger>
                         <SelectValue defaultValue={field.value} />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       {amountOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
@@ -152,7 +152,7 @@ const PhotoPage = () => {
                     value={field.value}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-black/5">
                       <SelectTrigger>
                         <SelectValue defaultValue={field.value} />
                       </SelectTrigger>

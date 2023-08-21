@@ -43,22 +43,21 @@ const ConversationPage = () => {
     setVoiceEnabled(!voiceEnabled);
   }
 
-async function speakText(text: string | undefined) {
-  if (!voiceEnabled || !text) return;
+function speakText(text: string | undefined) {
+  if (!voiceEnabled) return;
+  const synth = window.speechSynthesis;
+  const voices = synth.getVoices();
+  const selectedVoiceIndex = 8;
 
-  try {
-    const response = await axios.post("/api/text-to-speech", { text: text });
-    const audioData = `data:audio/mp3;base64,${Buffer.from(
-      response.data
-    ).toString("base64")}`;
+  const utterance = new SpeechSynthesisUtterance(text);
 
-    const audio = new Audio(audioData);
-    audio.play();
-  } catch (error) {
-    console.error("Error fetching audio:", error);
+  // Ensure the selected voice index exists.
+  if (voices[selectedVoiceIndex]) {
+    utterance.voice = voices[selectedVoiceIndex];
   }
-}
 
+  synth.speak(utterance);
+}
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -158,7 +157,7 @@ async function speakText(text: string | undefined) {
             checked={voiceEnabled}
             onCheckedChange={() => toggleVoice()}
           />
-          <Label className="text-sm">Voice</Label>
+          <Label className="text-sm">{voiceEnabled? "Voice Enabled" : "Voice Disabled"}</Label>
         </div>
 
         <div className="space-y-4 mt-4">

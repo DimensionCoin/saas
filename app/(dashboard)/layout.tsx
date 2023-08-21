@@ -5,7 +5,8 @@ import { checkSubscription } from "@/lib/subscription";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const apiLimitCount = await getApiLimitCount();
-  const isPro = await checkSubscription();
+  const subscriptionStatus = await checkSubscription();
+  const isPro = subscriptionStatus && subscriptionStatus.isValid ? true : false; // Extract the isValid value
 
   return (
     <div className="min-h-screen relative bg-black/10">

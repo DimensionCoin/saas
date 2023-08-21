@@ -48,6 +48,7 @@ export const LandingContent = () => {
                 <div>
                   <p className="text-lg">{item.name}</p>
                   <p className="text-zinc-400 text-sm">{item.title}</p>
+                  <p className="text-black text-sm border border-black rounded-full bg-white/50 text-center">{item.avatar}</p>
                 </div>
               </CardTitle>
               <CardContent className="pt-4 px-0">

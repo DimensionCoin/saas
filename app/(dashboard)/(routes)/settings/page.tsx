@@ -3,9 +3,11 @@ import { Heading } from "@/components/heading";
 import { SubscriptionButton } from "@/components/subscription-button";
 import { checkSubscription } from "@/lib/subscription";
 import { getApiLimitCount } from "@/lib/api-limit";
+import { SubscriptionEndDate } from "@/components/countdown-timer";
 
 const SettingsPage = async () => {
-  const isPro = await checkSubscription();
+  const subscriptionStatus = await checkSubscription();
+  const isPro = subscriptionStatus && subscriptionStatus.isValid ? true : false;
   const apiLimitCount = await getApiLimitCount();
 
   return (
@@ -27,6 +29,11 @@ const SettingsPage = async () => {
           <SubCounts isPro={isPro} apiLimitCount={apiLimitCount} />
         </div>
         <SubscriptionButton isPro={isPro} />
+      </div>
+      <div className="mb-4 py-4">
+        {subscriptionStatus && subscriptionStatus.endDate && (
+          <SubscriptionEndDate endDate={subscriptionStatus.endDate} />
+        )}{" "}
       </div>
     </div>
   );

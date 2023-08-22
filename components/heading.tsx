@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
+import Image from "next/image"; // <-- Import the Image component
 
 interface HeadingProps {
   title: string;
@@ -12,7 +13,7 @@ interface HeadingProps {
 export const Heading = ({
   title,
   description,
-  icon: IconComponent, 
+  icon: IconComponent,
   iconColor,
   bgColor,
 }: HeadingProps) => {
@@ -22,7 +23,13 @@ export const Heading = ({
     <div className="px-4 lg:px-8 flex items-center gap-x-3 mb-8 ">
       <div className={cn("p-2 w-fit rounded-md", bgColor)}>
         {isImageIcon ? (
-          <img src={IconComponent as string} className="w-14 h-14" alt="logo" />
+          // Use the Image component here
+          <Image
+            src={IconComponent as string}
+            width={56}
+            height={56}
+            alt="logo"
+          />
         ) : (
           <IconComponent className={cn("w-10 h-10", iconColor)} />
         )}

@@ -44,8 +44,8 @@ export const SubCounts = ({
             {/* Display message if apiLimitCount has reached MAX_SUB_COUNTS */}
             {apiLimitCount >= MAX_SUB_COUNTS && (
               <div className="mt-4 text-red-500 text-xs">
-                Looks like you've used all your generations this month, next
-                month you will restart at 0 generations
+                Looks like you&apos;ve used all your generations this month,
+                next month you will restart at 0 generations
               </div>
             )}
           </div>
